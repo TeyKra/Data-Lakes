@@ -22,7 +22,6 @@ docker --version
 
 3. Install AWS CLI
 AWS CLI is used to interact with LocalStack S3 buckets.
-
 ```bash
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -30,13 +29,11 @@ sudo ./aws/install
 ```
 
 4. Verify that the installation worked
-
 ```bash
 aws --version
 ```
 
 5. Configure AWS CLI for LocalStack
-
 ```bash
 aws configure
 ```
@@ -103,8 +100,8 @@ aws --endpoint-url=http://localhost:4566 s3 ls
 ```
 
 7. Install DVC
+   
 DVC is used for data version control and pipeline orchestration.
-
 ```bash
 pip install dvc
 ```
@@ -115,14 +112,13 @@ dvc remote modify localstack-s3 endpointurl http://localhost:4566
 ```
 
 ## 2. Repository Setup
-Install Python Dependencies
 
+Install Python Dependencies
 ```bash
 pip install -r build/requirements.txt
 ```
 
 Download the Dataset
-
 ```bash
 pip install kaggle 
 kaggle datasets download googleai/pfam-seed-random-split
@@ -133,7 +129,6 @@ Move the dataset into a data/raw folder.
 ## 3. Running the Pipeline
 
 Unpack the dataset into a single CSV file in the raw bucket:
-
 ```bash
 python build/unpack_to_raw.py --input_dir data/raw --bucket_name raw --output_file_name combined_raw.csv
 
@@ -242,8 +237,7 @@ File uploaded to S3 bucket 'raw' with key 'combined_raw.csv'
 Temporary file /tmp/combined_raw.csv removed.
 ```
 
-Check if the combined_raw.csv is inside the bucket: 
-
+Check if the combined_raw.csv is into the raw bucket: 
 ```bash 
 % aws --endpoint-url=http://localhost:4566 s3 ls s3://raw/ --recursive
 
@@ -251,7 +245,6 @@ Check if the combined_raw.csv is inside the bucket:
 ```
 
 Localstack output:
-
 ```bash
 2024-11-26T13:38:33.628  INFO --- [et.reactor-0] localstack.request.aws     : AWS s3.CreateMultipartUpload => 200
 2024-11-26T13:38:34.421  INFO --- [et.reactor-7] localstack.request.aws     : AWS s3.UploadPart => 200
@@ -336,7 +329,6 @@ Localstack output:
 ```
 
 Preprocess the data to clean, encode, split into train/dev/test, and compute class weights:
-
 ```bash
 python src/preprocess_to_staging.py --bucket_raw raw --bucket_staging staging --input_file combined_raw.csv --output_prefix preprocessed
 
@@ -348,7 +340,7 @@ Test data uploaded to S3 at preprocessed/test.csv
 Class weights uploaded to S3.
 ```
 
-Check if the files are into the staging layer:
+Check if the files are into the staging bucket:
 ```bash
 morgan@macbook-air-de-senechal Data-Lakes % aws --endpoint-url=http://localhost:4566 s3 ls s3://staging/ --recursive
 
@@ -370,7 +362,6 @@ Localstack output:
 ```
 
 Prepare the data for model training by tokenizing sequences:
-
 ```bash
 python src/process_to_curated.py \
     --bucket_staging staging \
@@ -388,7 +379,7 @@ Uploading tokenized_train.csv to bucket curated...
 Processed file successfully uploaded to curated/tokenized_train.csv.
 ```
 
-Check if the files are into the curated layer:
+Check if the files are into the curated bucket:
 ```bash
 morgan@macbook-air-de-senechal Data-Lakes % aws --endpoint-url=http://localhost:4566 s3 ls s3://curated/ --recursive
 
@@ -403,7 +394,6 @@ Localstack output:
 
 ## 4. Running the Entire Pipeline with DVC
 The pipeline stages are defined in dvc.yaml. Run the pipeline using:
-
 ```bash
 dvc repro
 ```
