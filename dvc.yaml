@@ -1,0 +1,35 @@
+stages:
+  data_import:
+    cmd: python data_import.py
+    deps:
+      - data/data_import.py
+    outs:
+      - data/raw/train/wikitext-2-raw-train.csv
+      - data/raw/test/wikitext-2-raw-test.csv
+      - data/raw/dev/wikitext-2-raw-dev.csv
+
+  unpack_and_upload:
+    cmd: python unpack_and_upload.py --input-dir data/raw --output-file data/raw/combined.csv --bucket-name raw
+    deps:
+      - unpack_and_upload.py
+      - data/raw/train/wikitext-2-raw-train.csv
+      - data/raw/test/wikitext-2-raw-test.csv
+      - data/raw/dev/wikitext-2-raw-dev.csv
+    outs:
+      - data/raw/wikitext_combined.csv
+
+  prepare_staging:
+    cmd: python prepare_staging.py --bucket my-bucket --file-key wikitext_combined.csv --download-path data/raw/wikitext_combined.csv --endpoint-url http://localhost:4566 --mysql-host 127.0.0.1 --mysql-port 3306 --mysql-user root --mysql-password root --mysql-database staging
+    deps:
+      - prepare_staging.py
+      - data/raw/wikitext_combined.csv
+    outs:
+      - data/staging/wikitext_cleaned.csv
+
+  staging_to_curated:
+    cmd: python staging_to_curated.py
+    deps:
+      - staging_to_curated.py
+      - data/staging/wikitext_cleaned.csv
+    outs:
+      - data/curated/wikitext_tokenized.json
