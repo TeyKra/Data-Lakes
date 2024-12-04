@@ -5,7 +5,7 @@ from datetime import datetime
 
 def connect_to_mysql(host, port, user, password, database):
     """
-    Connecte à la base de données MySQL.
+    Connects to the MySQL database.
     """
     connection = pymysql.connect(
         host=host,
@@ -14,32 +14,32 @@ def connect_to_mysql(host, port, user, password, database):
         password=password,
         database=database
     )
-    print("Connexion MySQL établie.")
+    print("MySQL connection established.")
     return connection
 
 def fetch_data_from_mysql(connection):
     """
-    Récupère les données depuis MySQL.
+    Fetches data from MySQL.
     """
     query = "SELECT id, content FROM texts;"
     with connection.cursor(pymysql.cursors.DictCursor) as cursor:
         cursor.execute(query)
         results = cursor.fetchall()
-    print(f"{len(results)} lignes récupérées depuis MySQL.")
+    print(f"{len(results)} rows retrieved from MySQL.")
     return results
 
 def connect_to_mongodb(host, port, database):
     """
-    Connecte à MongoDB.
+    Connects to MongoDB.
     """
     client = MongoClient(host, port)
     db = client[database]
-    print("Connexion MongoDB établie.")
+    print("MongoDB connection established.")
     return db
 
 def tokenize_texts(data, tokenizer_name):
     """
-    Tokenise les textes en utilisant un tokenizer pré-entraîné.
+    Tokenizes texts using a pre-trained tokenizer.
     """
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
     tokenized_data = []
@@ -55,28 +55,28 @@ def tokenize_texts(data, tokenizer_name):
                 "processed_at": datetime.utcnow().isoformat() + "Z"
             }
         })
-    print(f"{len(tokenized_data)} textes tokenisés.")
+    print(f"{len(tokenized_data)} texts tokenized.")
     return tokenized_data
 
 def insert_into_mongodb(collection, data):
     """
-    Insère les données dans MongoDB.
+    Inserts data into MongoDB.
     """
     result = collection.insert_many(data)
-    print(f"{len(result.inserted_ids)} documents insérés dans MongoDB.")
+    print(f"{len(result.inserted_ids)} documents inserted into MongoDB.")
 
 def fetch_sample_from_mongodb(collection, sample_size=5):
     """
-    Récupère un échantillon de documents depuis MongoDB.
+    Fetches a sample of documents from MongoDB.
     """
     sample = list(collection.find().limit(sample_size))
-    print(f"Échantillon de données depuis MongoDB ({sample_size} documents) :")
+    print(f"Sample data from MongoDB ({sample_size} documents):")
     for doc in sample:
         print(doc)
     return sample
 
 def main():
-    # Connexion à MySQL
+    # Connect to MySQL
     mysql_connection = connect_to_mysql(
         host="127.0.0.1",
         port=3306,
@@ -85,27 +85,27 @@ def main():
         database="staging"
     )
 
-    # Récupération des données
+    # Fetch data
     data = fetch_data_from_mysql(mysql_connection)
 
-    # Fermeture de la connexion MySQL
+    # Close MySQL connection
     mysql_connection.close()
 
-    # Tokenisation des textes
+    # Tokenize texts
     tokenized_data = tokenize_texts(data, tokenizer_name="distilbert-base-uncased")
 
-    # Connexion à MongoDB
+    # Connect to MongoDB
     mongodb = connect_to_mongodb(
         host="127.0.0.1",
         port=27017,
         database="curated"
     )
 
-    # Insertion dans MongoDB
+    # Insert into MongoDB
     collection = mongodb["wikitext"]
     insert_into_mongodb(collection, tokenized_data)
     
-    # Récupérer un échantillon de données de MongoDB
+    # Fetch a sample of data from MongoDB
     fetch_sample_from_mongodb(collection, sample_size=5)
 
 if __name__ == "__main__":
