@@ -1,36 +1,122 @@
-# TP5 - Pipeline de traitement des données avec Airflow
-Ce projet implémente une pipeline de traitement de données en trois étapes utilisant Airflow pour l'orchestration.
 
-Vous pouvez toujours lancer la pipeline en local avec DVC si vous le désirez nonobstant.
+# TP5 - Data Processing Pipeline with Airflow
+
+This project implements a three-stage data processing pipeline orchestrated using Airflow.  
+Alternatively, you can run the pipeline locally using DVC if desired.
 
 ## Architecture
-La pipeline est composée de trois étapes principales :
 
-* Raw : Extraction des données sources vers une zone brute
-* Staging : Transformation et chargement dans MySQL
-* Curated : Traitement final et stockage dans MongoDB
+The pipeline consists of three main stages:
 
+1. **Raw:** Extracting source data into a raw zone.  
+2. **Staging:** Transforming and loading data into MySQL.  
+3. **Curated:** Final processing and storage in MongoDB.  
 
-## Prérequis
-Python 3.8+
-DVC
-MySQL
-MongoDB
-LocalStack (pour simuler S3)
+## Prerequisites
 
+To run this project, ensure the following are installed:
 
-## Trigger le DAG Airflow du TP4
+- Python 3.8+  
+- DVC  
+- MySQL  
+- MongoDB  
+- LocalStack (to simulate S3)  
 
-* Lancez un **docker-compose build** pour installer l'environnement virtuel qui sera utilisé par Airflow. Airflow utilise son propre environnement d'exécution, c'est pourquoi nous ne passons plus simplement par un venv conda ou similaire, mais par un dockerfile.
-* Lancez un **docker-compose up -d** pour lancer tous les services.
-* Accédez à l'interface Airflow sur localhost:8081. Si besoin, remplacez localhost par l'ip locale de la VM ou du WSL 2 sur lequel vous faites tourner votre stack. 
-* J'ai paramétré le docker-compose pour que l'identifiant et le mot de passe soient **airflow**
-* Depuis votre terminal, lancez le script pipeline.py du dossier dags. Cela fera apparaître le DAG dans l'interface web de Airflow
-* Vous pouvez maintenant trigger le DAG depuis l'interface graphique. Il sera automatiquement relancé à l'intervalle défini dans pipeline.py ...
-* ... ce que nous allons utiliser pour remplir une base de données en continu depuis une API dans le TP5
+## Triggering the Airflow DAG from TP4
 
-## Votre objectif
+1. Run `docker-compose build` to set up the virtual environment used by Airflow.  
+   Airflow uses its own execution environment; therefore, we use a Dockerfile instead of a standard virtual environment like Conda.  
 
-* Suivez le sujet du TP5 pour récupérer des données depuis l'API de HackerNews
-* Pour le faire vous avez 3 scripts à remplir : src/hn_api.py, src/es_handler.py, et dags/hackernews_dag.py
-* Vous pouvez vous inspirer de l'exemple du TP4 pour faire fonctionner votre DAG
+2. Run `docker-compose up -d` to launch all services.  
+
+3. Access the Airflow interface at `http://localhost:8081`.  
+   If necessary, replace `localhost` with the local IP address of your VM or WSL 2 instance running the stack.  
+   The default credentials are:  
+   - **Username:** `airflow`  
+   - **Password:** `airflow`  
+
+4. From your terminal, execute the `pipeline.py` script located in the `dags` folder.  
+   This will make the DAG appear in the Airflow web interface.  
+
+5. Trigger the DAG from the graphical interface.  
+   It will automatically rerun at the interval defined in `pipeline.py`...  
+
+6. ...which will be used to continuously populate a database from an API in TP5.  
+
+## Your Objective
+
+Follow the TP5 instructions to fetch data from the HackerNews API.  
+
+### Required Scripts to Complete
+
+- `src/hn_api.py`  
+- `src/es_handler.py`  
+- `dags/hackernews_dag.py`  
+
+You can refer to the TP4 example to help you set up and run your DAG.  
+
+### Sample Commands
+
+#### Fetching Data
+```bash
+python hn_api.py --limit 50 --endpoint-url http://localhost:4566
+```
+
+**Output:**
+`File hacker_news_stories.json successfully uploaded to the raw-data bucket.`  
+
+#### Indexing Data
+```bash
+python es_handler.py --host localhost --port 9200 --endpoint-url http://localhost:4566
+```
+
+**Output:**
+`49 stories indexed in the 'hackernews' index.`  
+
+#### Querying Data
+```bash
+curl -X GET "http://localhost:9200/hackernews/_search?q=*&pretty"
+```
+
+**Output:**
+```json
+{
+  "took" : 502,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 49,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "hackernews",
+        "_type" : "_doc",
+        "_id" : "42633501",
+        "_score" : 1.0,
+        "_source" : {
+          "id" : 42633501,
+          "title" : "We Cracked a 512-Bit DKIM Key for Less Than $8 in the Cloud",
+          "url" : "https://dmarcchecker.app/articles/crack-512-bit-dkim-rsa-key",
+          "score" : 209,
+          "timestamp" : "2025-01-08T13:32:34"
+        }
+      }
+      // ...additional results...
+    ]
+  }
+}
+```
+
+## Visual Representation
+
+Use the Airflow interface to visualize and monitor your pipeline DAG.  
+Sample pipeline graph:  
+![Pipeline Visualization]

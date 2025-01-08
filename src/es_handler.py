@@ -6,27 +6,41 @@ from io import BytesIO
 
 class ElasticsearchHandler:
     def __init__(self, host="localhost", port=9200):
-        self.es = Elasticsearch([{'host': host, 'port': port}])
-        
-    def create_index(self, index_name="hackernews"):
-        # Créez une fonction qui génère un index elasticsearch qui correspondra aux stories hackernews
-        # L'index devrait avoir les champs suivants :
-        #            "id": {"type": "integer"},
-        #            "title": {"type": "text"},
-        #            "url": {"type": "keyword"},
-        #            "score": {"type": "integer"},
-        #            "timestamp": {"type": "date"}
-    
-    def index_stories(self, stories, index_name="hackernews"):
-        # Créez une fonction qui indexe les stories que nous avons récupérées sur l'index 'hackernews'
-        # En vocabulaire Elasticsearch, vous pouvez le comprendre comme 'ajouter à une table'
+        # Activez le mode de compatibilité pour Elasticsearch 7.x
+        self.es = Elasticsearch(
+            hosts=[{'host': host, 'port': port, 'scheme': 'http'}],
+            compatibility_mode=True
+        )
 
-def get_stories_from_s3(endpoint_url):
-    """Récupère les stories depuis S3."""
-    s3_client = boto3.client('s3', endpoint_url=endpoint_url)
-    
-    # Ecrivez le code permettant de récupérer les stories brutes stockées sur le bucket raw pour 
-    # les injecter dans ES
+    def create_index(self, index_name="hackernews"):
+        mappings = {
+            "mappings": {
+                "properties": {
+                    "id": {"type": "integer"},
+                    "title": {"type": "text"},
+                    "url": {"type": "keyword"},
+                    "score": {"type": "integer"},
+                    "timestamp": {"type": "date"}
+                }
+            }
+        }
+        self.es.indices.create(index=index_name, body=mappings, ignore=400)
+        print(f"Index '{index_name}' créé avec succès.")
+
+    def index_stories(self, stories, index_name="hackernews"):
+        for story in stories:
+            self.es.index(index=index_name, id=story["id"], body=story)
+        print(f"{len(stories)} stories indexées dans l'index '{index_name}'.")
+
+def get_stories_from_s3(endpoint_url, bucket_name="raw-data", file_name="hacker_news_stories.json"):
+    try:
+        s3_client = boto3.client('s3', endpoint_url=endpoint_url)
+        response = s3_client.get_object(Bucket=bucket_name, Key=file_name)
+        content = response['Body'].read().decode('utf-8')
+        return json.loads(content)
+    except Exception as e:
+        print(f"Erreur lors de la récupération des stories depuis S3 : {e}")
+        return []
 
 def main():
     parser = argparse.ArgumentParser(description='Index stories to Elasticsearch')

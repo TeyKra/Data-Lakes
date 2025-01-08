@@ -1,0 +1,15 @@
+[2025-01-08T15:20:04.614+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: hackernews_pipeline.fetch_hackernews_stories manual__2025-01-08T15:19:56.555860+00:00 [queued]>
+[2025-01-08T15:20:04.661+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: hackernews_pipeline.fetch_hackernews_stories manual__2025-01-08T15:19:56.555860+00:00 [queued]>
+[2025-01-08T15:20:04.662+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 2
+[2025-01-08T15:20:04.709+0000] {taskinstance.py:1380} INFO - Executing <Task(PythonOperator): fetch_hackernews_stories> on 2025-01-08 15:19:56.555860+00:00
+[2025-01-08T15:20:04.723+0000] {standard_task_runner.py:57} INFO - Started process 797 to run task
+[2025-01-08T15:20:04.785+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'hackernews_pipeline', 'fetch_hackernews_stories', 'manual__2025-01-08T15:19:56.555860+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/hackernews_dag.py', '--cfg-path', '/tmp/tmp50h8gb47']
+[2025-01-08T15:20:04.871+0000] {standard_task_runner.py:85} INFO - Job 2: Subtask fetch_hackernews_stories
+[2025-01-08T15:20:05.002+0000] {logging_mixin.py:151} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2025-01-08T15:20:05.249+0000] {task_command.py:415} INFO - Running <TaskInstance: hackernews_pipeline.fetch_hackernews_stories manual__2025-01-08T15:19:56.555860+00:00 [running]> on host b0d8a0cf0007
+[2025-01-08T15:20:05.478+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='hackernews_pipeline' AIRFLOW_CTX_TASK_ID='fetch_hackernews_stories' AIRFLOW_CTX_EXECUTION_DATE='2025-01-08T15:19:56.555860+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-01-08T15:19:56.555860+00:00'
+[2025-01-08T15:20:23.115+0000] {logging_mixin.py:151} INFO - 49 histoires récupérées et sauvegardées.
+[2025-01-08T15:20:23.134+0000] {python.py:194} INFO - Done. Returned value was: None
+[2025-01-08T15:20:23.173+0000] {taskinstance.py:1398} INFO - Marking task as SUCCESS. dag_id=hackernews_pipeline, task_id=fetch_hackernews_stories, execution_date=20250108T151956, start_date=20250108T152004, end_date=20250108T152023
+[2025-01-08T15:20:23.212+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2025-01-08T15:20:23.251+0000] {taskinstance.py:2776} INFO - 1 downstream tasks scheduled from follow-on schedule check

@@ -14,13 +14,13 @@ class HackerNewsAPI:
         stories = []
         
         # Récupération des IDs
-        url = "" # A vous de trouver l'URL exacte à query
+        url = f"{HackerNewsAPI.BASE_URL}/topstories.json" # A vous de trouver l'URL exacte à query
         response = requests.get(url)
         story_ids = response.json()[:limit]
         
         # Récupération des détails pour chaque histoire
         for story_id in story_ids:
-            url = "" # A vous de trouver l'URL à query encore une fois
+            url = f"{HackerNewsAPI.BASE_URL}/item/{story_id}.json" # A vous de trouver l'URL à query encore une fois
             response = requests.get(url)
             story = response.json()
             
@@ -39,13 +39,23 @@ class HackerNewsAPI:
         
         return stories
 
-def upload_to_s3(stories, endpoint_url):
-    """Upload les stories vers S3."""
-    s3_client = boto3.client('s3', endpoint_url=endpoint_url)
-    
-    #################
-    # A vous d'écrire cette fonction
-    #################
+def upload_to_s3(stories, endpoint_url, bucket_name="raw-data", file_name="hacker_news_stories.json"):
+    try:
+        s3_client = boto3.client('s3', endpoint_url=endpoint_url)
+        
+        # Convertir les histoires en JSON
+        data = json.dumps(stories, indent=4)
+        
+        # Uploader vers S3
+        s3_client.put_object(
+            Bucket=bucket_name,
+            Key=file_name,
+            Body=data,
+            ContentType='application/json'
+        )
+        print(f"Fichier {file_name} uploadé avec succès dans le bucket {bucket_name}.")
+    except Exception as e:
+        print(f"Erreur lors de l'upload vers S3 : {e}")
 
 def main():
     parser = argparse.ArgumentParser(description='Fetch top stories from Hacker News API')
