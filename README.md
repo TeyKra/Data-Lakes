@@ -1,28 +1,36 @@
-# TP4 - Data Processing Pipeline with Airflow
-This project implements a three-step data processing pipeline using Airflow for orchestration.
+# TP5 - Pipeline de traitement des données avec Airflow
+Ce projet implémente une pipeline de traitement de données en trois étapes utilisant Airflow pour l'orchestration.
 
-You can also run the pipeline locally with DVC if desired.
+Vous pouvez toujours lancer la pipeline en local avec DVC si vous le désirez nonobstant.
 
 ## Architecture
-The pipeline consists of three main steps:
+La pipeline est composée de trois étapes principales :
 
-* **Raw**: Extract source data to a raw zone
-* **Staging**: Transform and load data into MySQL
-* **Curated**: Final processing and storage in MongoDB
+* Raw : Extraction des données sources vers une zone brute
+* Staging : Transformation et chargement dans MySQL
+* Curated : Traitement final et stockage dans MongoDB
 
-## Prerequisites
-* Python 3.8+
-* DVC
-* MySQL
-* MongoDB
-* LocalStack (to simulate S3)
 
-## How to Run
-1. Run the command `docker-compose build`.
-2. Start the services with `docker-compose up -d`.
-3. Access the Airflow interface on `localhost:8081`. Replace `localhost` with the local IP of the VM or WSL 2 if necessary.
-4. Log in to Airflow using the username and password **airflow** (pre-configured in the `docker-compose` file).
-5. From your terminal, run the `pipeline.py` script in the `dags` folder. This will make the DAG appear in the Airflow web interface.
-6. Trigger the DAG from the graphical interface. It will automatically rerun at the interval defined in `pipeline.py`.
+## Prérequis
+Python 3.8+
+DVC
+MySQL
+MongoDB
+LocalStack (pour simuler S3)
 
-This pipeline will continuously populate a database from an API, as will be further explored in TP5.
+
+## Trigger le DAG Airflow du TP4
+
+* Lancez un **docker-compose build** pour installer l'environnement virtuel qui sera utilisé par Airflow. Airflow utilise son propre environnement d'exécution, c'est pourquoi nous ne passons plus simplement par un venv conda ou similaire, mais par un dockerfile.
+* Lancez un **docker-compose up -d** pour lancer tous les services.
+* Accédez à l'interface Airflow sur localhost:8081. Si besoin, remplacez localhost par l'ip locale de la VM ou du WSL 2 sur lequel vous faites tourner votre stack. 
+* J'ai paramétré le docker-compose pour que l'identifiant et le mot de passe soient **airflow**
+* Depuis votre terminal, lancez le script pipeline.py du dossier dags. Cela fera apparaître le DAG dans l'interface web de Airflow
+* Vous pouvez maintenant trigger le DAG depuis l'interface graphique. Il sera automatiquement relancé à l'intervalle défini dans pipeline.py ...
+* ... ce que nous allons utiliser pour remplir une base de données en continu depuis une API dans le TP5
+
+## Votre objectif
+
+* Suivez le sujet du TP5 pour récupérer des données depuis l'API de HackerNews
+* Pour le faire vous avez 3 scripts à remplir : src/hn_api.py, src/es_handler.py, et dags/hackernews_dag.py
+* Vous pouvez vous inspirer de l'exemple du TP4 pour faire fonctionner votre DAG
