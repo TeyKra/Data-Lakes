@@ -115,8 +115,12 @@ curl -X GET "http://localhost:9200/hackernews/_search?q=*&pretty"
 }
 ```
 
-## Visual Representation
+## Airflow pipeline 
 
-Use the Airflow interface to visualize and monitor your pipeline DAG.  
-Sample pipeline graph:  
-![Pipeline Visualization]
+```bash
+flowchart LR
+    subgraph DAG: hackernews_pipeline
+    A[fetch_hackernews_stories] --> B[index_stories_to_elasticsearch]
+    end
+```bash
+
