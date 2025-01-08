@@ -122,5 +122,5 @@ flowchart LR
     subgraph DAG: hackernews_pipeline
     A[fetch_hackernews_stories] --> B[index_stories_to_elasticsearch]
     end
-```bash
+```
 
