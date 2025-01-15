@@ -1,126 +1,34 @@
-
 # TP5 - Data Processing Pipeline with Airflow
+This project implements a three-step data processing pipeline using Airflow for orchestration.
 
-This project implements a three-stage data processing pipeline orchestrated using Airflow.  
-Alternatively, you can run the pipeline locally using DVC if desired.
+You can always run the pipeline locally with DVC if desired nonetheless.
 
 ## Architecture
+The pipeline consists of three main steps:
 
-The pipeline consists of three main stages:
-
-1. **Raw:** Extracting source data into a raw zone.  
-2. **Staging:** Transforming and loading data into MySQL.  
-3. **Curated:** Final processing and storage in MongoDB.  
+* Raw: Extract source data to a raw zone
+* Staging: Transform and load data into MySQL
+* Curated: Final processing and storage in MongoDB
 
 ## Prerequisites
+Python 3.8+  
+DVC  
+MySQL  
+MongoDB  
+LocalStack (to simulate S3)
 
-To run this project, ensure the following are installed:
+## Trigger the Airflow DAG from TP4
 
-- Python 3.8+  
-- DVC  
-- MySQL  
-- MongoDB  
-- LocalStack (to simulate S3)  
-
-## Triggering the Airflow DAG from TP4
-
-1. Run `docker-compose build` to set up the virtual environment used by Airflow.  
-   Airflow uses its own execution environment; therefore, we use a Dockerfile instead of a standard virtual environment like Conda.  
-
-2. Run `docker-compose up -d` to launch all services.  
-
-3. Access the Airflow interface at `http://localhost:8081`.  
-   If necessary, replace `localhost` with the local IP address of your VM or WSL 2 instance running the stack.  
-   The default credentials are:  
-   - **Username:** `airflow`  
-   - **Password:** `airflow`  
-
-4. From your terminal, execute the `pipeline.py` script located in the `dags` folder.  
-   This will make the DAG appear in the Airflow web interface.  
-
-5. Trigger the DAG from the graphical interface.  
-   It will automatically rerun at the interval defined in `pipeline.py`...  
-
-6. ...which will be used to continuously populate a database from an API in TP5.  
+* Run a **docker-compose build** to install the virtual environment that will be used by Airflow. Airflow uses its own execution environment, which is why we no longer simply use a conda venv or similar, but a Dockerfile.
+* Run **docker-compose up -d** to start all services.
+* Access the Airflow interface at localhost:8081. If needed, replace `localhost` with the local IP address of the VM or WSL 2 instance where your stack is running. 
+* I have configured the `docker-compose` to use **airflow** as the username and password.
+* From your terminal, run the `pipeline.py` script located in the `dags` folder. This will make the DAG appear in the Airflow web interface.
+* You can now trigger the DAG from the graphical interface. It will automatically be re-triggered at the interval defined in `pipeline.py`...
+* ... which we will use to continuously populate a database from an API in TP5.
 
 ## Your Objective
 
-Follow the TP5 instructions to fetch data from the HackerNews API.  
-
-### Required Scripts to Complete
-
-- `src/hn_api.py`  
-- `src/es_handler.py`  
-- `dags/hackernews_dag.py`  
-
-You can refer to the TP4 example to help you set up and run your DAG.  
-
-### Sample Commands
-
-#### Fetching Data
-```bash
-python hn_api.py --limit 50 --endpoint-url http://localhost:4566
-```
-
-**Output:**
-`File hacker_news_stories.json successfully uploaded to the raw-data bucket.`  
-
-#### Indexing Data
-```bash
-python es_handler.py --host localhost --port 9200 --endpoint-url http://localhost:4566
-```
-
-**Output:**
-`49 stories indexed in the 'hackernews' index.`  
-
-#### Querying Data
-```bash
-curl -X GET "http://localhost:9200/hackernews/_search?q=*&pretty"
-```
-
-**Output:**
-```json
-{
-  "took" : 502,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 1,
-    "successful" : 1,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : {
-      "value" : 49,
-      "relation" : "eq"
-    },
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "hackernews",
-        "_type" : "_doc",
-        "_id" : "42633501",
-        "_score" : 1.0,
-        "_source" : {
-          "id" : 42633501,
-          "title" : "We Cracked a 512-Bit DKIM Key for Less Than $8 in the Cloud",
-          "url" : "https://dmarcchecker.app/articles/crack-512-bit-dkim-rsa-key",
-          "score" : 209,
-          "timestamp" : "2025-01-08T13:32:34"
-        }
-      }
-      // ...additional results...
-    ]
-  }
-}
-```
-
-## Airflow pipeline 
-
-```bash
-flowchart LR
-    subgraph DAG: hackernews_pipeline
-    A[fetch_hackernews_stories] --> B[index_stories_to_elasticsearch]
-    end
-```
-
+* Follow the TP5 instructions to retrieve data from the HackerNews API.
+* To do this, you need to complete three scripts: `src/hn_api.py`, `src/es_handler.py`, and `dags/hackernews_dag.py`.
+* You can refer to the example from TP4 to make your DAG work.

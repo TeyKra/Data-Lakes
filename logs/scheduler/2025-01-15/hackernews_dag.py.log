@@ -1,0 +1,45 @@
+[2025-01-15T15:30:51.651+0000] {processor.py:157} INFO - Started process (PID=169) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:30:51.669+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:30:51.686+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:51.679+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:30:51.834+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:30:52.758+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:52.758+0000] {manager.py:499} INFO - Created Permission View: %s
+[2025-01-15T15:30:52.770+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:52.770+0000] {manager.py:499} INFO - Created Permission View: %s
+[2025-01-15T15:30:52.786+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:52.785+0000] {manager.py:499} INFO - Created Permission View: %s
+[2025-01-15T15:30:52.787+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:52.787+0000] {security.py:708} INFO - Not syncing DAG-level permissions for DAG 'DAG:hackernews_pipeline' as access control is unset.
+[2025-01-15T15:30:52.793+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:52.793+0000] {dag.py:2915} INFO - Sync 1 DAGs
+[2025-01-15T15:30:55.657+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:55.657+0000] {dag.py:2937} INFO - Creating ORM DAG for hackernews_pipeline
+[2025-01-15T15:30:55.727+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:30:55.727+0000] {dag.py:3696} INFO - Setting next_dagrun for hackernews_pipeline to 2024-01-01T00:00:00+00:00, run_after=2024-01-01T00:05:00+00:00
+[2025-01-15T15:30:55.812+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/hackernews_dag.py took 4.196 seconds
+[2025-01-15T15:31:26.892+0000] {processor.py:157} INFO - Started process (PID=178) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:31:26.909+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:31:26.933+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:31:26.923+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:31:27.406+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:31:28.047+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:31:28.046+0000] {dag.py:2915} INFO - Sync 1 DAGs
+[2025-01-15T15:31:28.368+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:31:28.365+0000] {dag.py:3696} INFO - Setting next_dagrun for hackernews_pipeline to 2024-01-01T00:00:00+00:00, run_after=2024-01-01T00:05:00+00:00
+[2025-01-15T15:31:28.500+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/hackernews_dag.py took 1.727 seconds
+[2025-01-15T15:31:59.596+0000] {processor.py:157} INFO - Started process (PID=187) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:31:59.605+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:31:59.626+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:31:59.613+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:32:00.280+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:32:01.009+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:32:01.008+0000] {dag.py:2915} INFO - Sync 1 DAGs
+[2025-01-15T15:32:01.509+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:32:01.508+0000] {dag.py:3696} INFO - Setting next_dagrun for hackernews_pipeline to 2024-01-01T00:00:00+00:00, run_after=2024-01-01T00:05:00+00:00
+[2025-01-15T15:32:01.665+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/hackernews_dag.py took 2.163 seconds
+[2025-01-15T15:32:33.036+0000] {processor.py:157} INFO - Started process (PID=197) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:32:33.061+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:32:33.170+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:32:33.148+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:32:34.318+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:32:35.562+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:32:35.561+0000] {dag.py:2915} INFO - Sync 1 DAGs
+[2025-01-15T15:32:36.148+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:32:36.142+0000] {dag.py:3696} INFO - Setting next_dagrun for hackernews_pipeline to 2024-01-01T00:00:00+00:00, run_after=2024-01-01T00:05:00+00:00
+[2025-01-15T15:32:36.495+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/hackernews_dag.py took 3.759 seconds
+[2025-01-15T15:33:08.311+0000] {processor.py:157} INFO - Started process (PID=222) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:33:08.354+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:33:08.386+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:33:08.370+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:33:08.988+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:33:11.218+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:33:11.206+0000] {dag.py:2915} INFO - Sync 1 DAGs
+[2025-01-15T15:33:11.980+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:33:11.978+0000] {dag.py:3696} INFO - Setting next_dagrun for hackernews_pipeline to 2024-01-01T00:00:00+00:00, run_after=2024-01-01T00:05:00+00:00
+[2025-01-15T15:33:20.063+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/hackernews_dag.py took 11.953 seconds
+[2025-01-15T15:33:52.491+0000] {processor.py:157} INFO - Started process (PID=367) to work on /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:33:52.564+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/hackernews_dag.py for tasks to queue
+[2025-01-15T15:33:52.630+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:33:52.586+0000] {dagbag.py:539} INFO - Filling up the DagBag from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:33:59.675+0000] {processor.py:839} INFO - DAG(s) dict_keys(['hackernews_pipeline']) retrieved from /opt/airflow/dags/hackernews_dag.py
+[2025-01-15T15:34:05.690+0000] {logging_mixin.py:151} INFO - [2025-01-15T15:34:05.553+0000] {dag.py:2915} INFO - Sync 1 DAGs
